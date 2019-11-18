@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f799fed-4683-4834-92a0-8c4eef0355d7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modistabox_api/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/modistabox_api/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modistabox_api/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="110" selection-start-line="110" selection-end-line="110" />
+            <state relative-caret-position="465">
+              <caret line="87" selection-start-line="87" selection-end-line="87" />
               <folding>
                 <element signature="e#315#324#0" expanded="true" />
               </folding>
@@ -294,8 +292,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modistabox_api/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="110" selection-start-line="110" selection-end-line="110" />
+        <state relative-caret-position="465">
+          <caret line="87" selection-start-line="87" selection-end-line="87" />
           <folding>
             <element signature="e#315#324#0" expanded="true" />
           </folding>
