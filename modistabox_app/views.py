@@ -51,7 +51,9 @@ def update_blog(request):
             blog_obj.save()
             return Response(blog_serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response({'msg':'User has no permission to perform this operation'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'msg': 'User has no permission to perform this operation'
+            }, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(blog_serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -67,7 +69,11 @@ def view_blog(request):
         edit_allowed = 1
         if blog_obj.created_by == request.user:
             edit_allowed = 0
-        return Response({'msg': 'Blog retrieved successfully!', 'data': blog.data,'edit_allowed':edit_allowed}, status=status.HTTP_200_OK)
+        return Response({
+            'msg': 'Blog retrieved successfully!',
+            'data': blog.data,
+            'edit_allowed': edit_allowed
+        }, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'msg': str(e)}, status=status.HTTP_404_NOT_FOUND)
 

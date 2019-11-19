@@ -1,15 +1,7 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework import authentication, permissions, status
-from authentication_app.serializers import UserSerializer, LoginSerializer
-from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-
-from authentication_app.models import User
+from rest_framework import permissions, status
+from authentication_app.serializers import UserSerializer
 from .backends import EmailAuthBackend
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import auth
-from django.db import IntegrityError
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -38,8 +30,6 @@ def signup(request):
 def login(request):
     username = request.data.get("username")
     password = request.data.get("password")
-    print(username)
-    print(password)
     if username is None or password is None:
         return Response({'error': 'Please provide both username and password'},
                         status=HTTP_400_BAD_REQUEST)
@@ -49,16 +39,6 @@ def login(request):
                         status=HTTP_404_NOT_FOUND)
     token,_ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key},
-                    status=HTTP_200_OK)
-
-
-#curl -i -H "Authorization: Token 2536ac6c9e00c5c4ace98395186cd1e42126adf4" -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8000/test/
-
-@csrf_exempt
-@api_view(["GET"])
-@permission_classes((IsAuthenticated,))
-def test(request):
-    return Response({'email': request.user.email},
                     status=HTTP_200_OK)
 
 
