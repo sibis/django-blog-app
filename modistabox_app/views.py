@@ -28,7 +28,8 @@ def list_blogs(request):
         page = request.data.get('page') or 1;
         number_of_items = request.data.get('items_per_page') or 5
         search_term = request.data.get('search') or ""
-        blogs_object = Blog.objects.filter(Q(title__icontains=search_term) | Q(content__icontains=search_term)).order_by('-created_on')
+        blogs_object = Blog.objects.filter(Q(title__icontains=search_term)
+                                           | Q(content__icontains=search_term)).order_by('-created_on')
         paginator = Paginator(blogs_object, number_of_items)
         result_page = paginator.page(page)
         next_page = 0
@@ -96,7 +97,7 @@ def view_blog(request):
         blog_obj = Blog.objects.get(id=blog_id)
         blog = BlogListsSerializer(blog_obj)
         edit_allowed = 1
-        if blog_obj.created_by == request.user:
+        if blog_obj.created_by == request.user or request.user.id == 1:
             edit_allowed = 0
         return Response({
             'msg': 'Blog retrieved successfully!',
@@ -114,7 +115,7 @@ def delete_blog(request):
     try:
         blog_id = request.data.get('id')
         blog = Blog.objects.get(id=blog_id)
-        if blog.created_by == request.user:
+        if blog.created_by == request.user or request.user.id == 1:
             blog.delete()
             return Response({'msg': 'Blog deleted successfully!'}, status=status.HTTP_200_OK)
         else:
