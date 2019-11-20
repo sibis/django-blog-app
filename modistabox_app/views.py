@@ -1,22 +1,51 @@
-from django.shortcuts import render
-
+from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
-
 from modistabox_app.models import Blog
 from datetime import datetime
 from modistabox_app.serializers import BlogSerializer, BlogListsSerializer
+from django.core.paginator import Paginator
 
 
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes((permissions.IsAuthenticated,))
-def list_blogs(request):
+def list_blog(request):
     try:
         blogs = BlogListsSerializer(Blog.objects.all(), many=True)
         return Response({'msg': 'Blogs retrived successfully!', 'data': blogs.data}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'msg': str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes((permissions.IsAuthenticated,))
+def list_blogs(request):
+    try:
+        page = request.data.get('page') or 1;
+        number_of_items = request.data.get('items_per_page') or 5
+        search_term = request.data.get('search') or ""
+        blogs_object = Blog.objects.filter(Q(title__icontains=search_term) | Q(content__icontains=search_term)).order_by('-created_on')
+        paginator = Paginator(blogs_object, number_of_items)
+        result_page = paginator.page(page)
+        next_page = 0
+        previous_page = 0
+        if result_page.has_previous():
+            previous_page = result_page.previous_page_number()
+        if result_page.has_next():
+            next_page = result_page.next_page_number()
+        blogs = BlogListsSerializer(result_page, many=True)
+        return Response({
+            'msg': 'Blogs retrived successfully!',
+            'data': blogs.data,
+            'has_next': result_page.has_next(),
+            'has_previous': result_page.has_previous(),
+            'next_page': next_page,
+            'previous_page': previous_page,
+        }, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'msg': str(e)}, status=status.HTTP_404_NOT_FOUND)
 
